@@ -1,0 +1,44 @@
+#Lệnh build: mvn clean package -P test, dev, prod
+#Lệnh run: java -jar target/tên_file_đuôi_jar
+#server:
+#  port: 8080
+spring:
+  config:
+    active:
+      on-profile: dev
+  devtools:
+    add-properties: true
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:password}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+openapi:
+  service:
+    title: ${API_TITLE:DUMMY-API-TITLE}
+    version: 1.0.0
+    description: API Service Description
+    serverUrl: http://localhost:${server.port}
+    serverName: Server test
+    api-docs: api-service
+
+
+#open:
+#  api:
+#    title: ${API_TITLE:DUMMY-API-TITLE}
+#    version: v1.0.0
+#    description: API Service Description
+#    serverUrl: http://localhost:${server.port}
+#    serverName: Server test

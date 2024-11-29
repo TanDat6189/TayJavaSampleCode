@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  postgres2:
+    image: postgres
+    container_name: postgres2
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+      - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+
+  api-service:
+    container_name: api-container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - '8080:80'
+    networks:
+      - backend
+
+#  api-service-test:
+#    container_name: api-container-2
+#    image: api-image-sample
+#    ports:
+#      - '8081:80'
+#    networks:
+#      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres:
+#Run: docker-compose up -d
+#Show all containers are running: docker-compose ps
+#Show all containers are running(including hidden containers): docker-compose ps
+#Remove containers are running: docker-compose down -v
+
+#Auto generate file .jar, then add it to image (must have def 'build' property): mvn clean install -P test -> docker-compose up -d api-service
+
+#Check log (if the service is error): docker-compose logs -tf api-service
